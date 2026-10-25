@@ -1,0 +1,24 @@
+"""Central settings. Override any of them with environment variables."""
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+UPLOAD_DIR = BASE_DIR / "uploads"
+CHROMA_DIR = BASE_DIR / "chroma_db"
+FRONTEND_DIR = Path(os.getenv("FRONTEND_DIR", BASE_DIR.parent / "frontend"))
+FEEDBACK_FILE = BASE_DIR / "feedback.jsonl"
+
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+LLM_MODEL = os.getenv("LLM_MODEL", "qwen2.5:3b")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text")
+
+CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 700))      # characters
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 100))
+TOP_K = int(os.getenv("TOP_K", 5))                  # chunks sent to the LLM
+CANDIDATES = int(os.getenv("CANDIDATES", 20))       # chunks fetched before re-ranking
+
+# If the best chunk is less similar than this, we refuse WITHOUT calling the LLM.
+# Tune with /ask?debug=true and evaluate.py (typical nomic-embed-text range: 0.40-0.55).
+MIN_SIMILARITY = float(os.getenv("MIN_SIMILARITY", 0.45))
+
+UPLOAD_DIR.mkdir(exist_ok=True)
