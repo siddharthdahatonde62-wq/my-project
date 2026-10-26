@@ -5,7 +5,18 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 CHROMA_DIR = BASE_DIR / "chroma_db"
-FRONTEND_DIR = Path(os.getenv("FRONTEND_DIR", BASE_DIR.parent / "frontend"))
+def _find_frontend() -> Path:
+    """frontend/ next to backend/ (preferred), else the project root if index.html lives there."""
+    env = os.getenv("FRONTEND_DIR")
+    if env:
+        return Path(env)
+    for cand in (BASE_DIR.parent / "frontend", BASE_DIR.parent):
+        if (cand / "index.html").exists():
+            return cand
+    return BASE_DIR.parent / "frontend"
+
+
+FRONTEND_DIR = _find_frontend()
 FEEDBACK_FILE = BASE_DIR / "feedback.jsonl"
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
