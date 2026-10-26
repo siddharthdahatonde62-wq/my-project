@@ -21,4 +21,7 @@ CANDIDATES = int(os.getenv("CANDIDATES", 20))       # chunks fetched before re-r
 # Tune with /ask?debug=true and evaluate.py (typical nomic-embed-text range: 0.40-0.55).
 MIN_SIMILARITY = float(os.getenv("MIN_SIMILARITY", 0.45))
 
+# A question sharing NO keyword with any retrieved chunk must be a very strong semantic match to be answered.
+STRONG_SIMILARITY = float(os.getenv("STRONG_SIMILARITY", 0.60))
+
 UPLOAD_DIR.mkdir(exist_ok=True)
