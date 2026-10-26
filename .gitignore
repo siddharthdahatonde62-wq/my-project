@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/chroma_db/
+backend/feedback.jsonl
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/
+.env
