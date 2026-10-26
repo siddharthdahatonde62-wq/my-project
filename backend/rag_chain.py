@@ -1,7 +1,7 @@
 """Retrieve -> gate -> generate -> verify. Every answer is tied to exact source chunks."""
 import re
 import httpx
-from config import OLLAMA_URL, LLM_MODEL, TOP_K, MIN_SIMILARITY
+from config import OLLAMA_URL, LLM_MODEL, TOP_K, MIN_SIMILARITY, STRONG_SIMILARITY
 from embeddings import OllamaError
 import vector_store as vs
 from pdf_loader import split_sentences
@@ -50,43 +50,66 @@ def not_found(reason: str, message: str = NOT_FOUND, **extra) -> dict:
     return {"answer": message, "found": False, "reason": reason, "sources": [], **extra}
 
 
+RETRY = ("You did not cite any passage. Answer again using ONLY the numbered passages and end every sentence "
+         "with its citation like [1]. If the passages do not clearly answer the question, reply exactly: " + NOT_FOUND)
+
+
+def _is_refusal(raw: str) -> bool:
+    return "could not find this information" in raw.lower()
+
+
+def _parse_cites(raw: str, n: int) -> list[int]:
+    out = []
+    for m in re.findall(r"\[(\d+)\]", raw):
+        i = int(m)
+        if 1 <= i <= n and i not in out:
+            out.append(i)
+    return out
+
+
 def ask(question: str, debug: bool = False) -> dict:
     if vs.count() == 0:
         return not_found("no_documents", "Please upload your college documents first, then ask again.")
 
     hits = vs.search(question, TOP_K)
     best = max((h["similarity"] for h in hits), default=0.0)
-    dbg = {"best_similarity": round(best, 3),
-           "scores": [(h["file"], h["page"], round(h["similarity"], 3)) for h in hits]} if debug else {}
+    best_lex = max((h["lexical"] for h in hits), default=0.0)
+    dbg = {"best_similarity": round(best, 3), "best_keyword_overlap": round(best_lex, 2),
+           "scores": [(h["file"], h["page"], round(h["similarity"], 3)) for h in hits]}
+    extra = {"debug": dbg} if debug else {}
 
     # Guard 1: nothing relevant retrieved -> refuse without ever asking the LLM.
     if best < MIN_SIMILARITY:
-        return not_found("low_relevance", **({"debug": dbg} if debug else {}))
+        return not_found("low_relevance", **extra)
+    # Guard 1b: vague questions ("what is the recent event?") share no keywords with the documents.
+    if best_lex == 0 and best < STRONG_SIMILARITY:
+        return not_found("no_keyword_match", **extra)
 
-    raw = chat([
+    messages = [
         {"role": "system", "content": SYSTEM},
         {"role": "user", "content": f"Context:\n{format_context(hits)}\n\nQuestion: {question}\nAnswer:"},
-    ])
-
+    ]
+    raw = chat(messages)
     # Guard 2: the model itself says it is not in the context.
-    if "could not find this information" in raw.lower():
-        return not_found("model_refused", **({"debug": dbg} if debug else {}))
+    if _is_refusal(raw):
+        return not_found("model_refused", **extra)
 
-    cited = []
-    for m in re.findall(r"\[(\d+)\]", raw):
-        i = int(m)
-        if 1 <= i <= len(hits) and i not in cited:
-            cited.append(i)
+    # Guard 3: an answer without a citation is never shown. Retry once, then refuse.
+    cited = _parse_cites(raw, len(hits))
+    if not cited:
+        raw = chat(messages + [{"role": "assistant", "content": raw}, {"role": "user", "content": RETRY}])
+        if _is_refusal(raw):
+            return not_found("model_refused", **extra)
+        cited = _parse_cites(raw, len(hits))
+    if not cited:
+        return not_found("uncited", **extra)
+
+    # Guard 4: every number in the answer must appear in the cited text.
     warnings = []
-    if not cited:  # model forgot to cite -> attach the best chunks, but flag it
-        cited = [1, 2][:len(hits)]
-        warnings.append("The model did not cite a passage; showing the closest sources instead.")
-
-    # Guard 3: every number in the answer must appear in the cited text.
     body = re.sub(r"\[\d+\]", "", raw)
     ctx_numbers = _numbers(" ".join(hits[i - 1]["text"] for i in cited))
     unsupported = sorted(_numbers(body) - ctx_numbers)
-    verified = not unsupported and not warnings
+    verified = not unsupported
     if unsupported:
         warnings.append(f"Could not verify these values in the cited text: {', '.join(unsupported)}. "
                         "Please check the source.")
@@ -105,8 +128,7 @@ def ask(question: str, debug: bool = False) -> dict:
                for n, i in enumerate(cited, 1)]
 
     out = {"answer": answer, "found": True, "verified": verified, "sources": sources, "warnings": warnings}
-    if debug:
-        out["debug"] = dbg
+    out.update(extra)
     return out
 
 

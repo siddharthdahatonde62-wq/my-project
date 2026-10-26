@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>Settings | CampusProof</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="index.html" aria-label="CampusProof home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5 12 2l8 3.5v7c0 4.4-3.5 7.6-8 9.5-4.5-1.9-8-5.1-8-9.5z"/><path d="m8 12 2.5 2.5L16 9"/></svg></span>
+      <span><span class="brand-name">Campus<span>Proof</span></span><span class="brand-sub">Your campus, clarified</span></span>
+    </a>
+    <div class="nav-label">Workspace</div>
+    <nav class="nav"><a href="index.html" class="" ><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="8" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="15" width="7" height="6" rx="2"/></svg></span><span>Dashboard</span></a>
+<a href="ask.html" class="" ><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a8 8 0 0 0-6.8 12.2L4 21l5.8-1.3A8 8 0 1 0 12 3Z"/><path d="M8.5 9.5a3.5 3.5 0 0 1 6.7 1.4c0 2.1-3.2 2.4-3.2 4"/><path d="M12 18h.01"/></svg></span><span>Ask AI</span></a>
+<a href="documents.html" class="" ><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span><span>Documents</span></a>
+<a href="deadlines.html" class="" ><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3M8 17h6"/></svg></span><span>Deadlines</span></a>
+<a href="saved.html" class="" ><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a2 2 0 0 1 2 2v16l-8-4-8 4V5a2 2 0 0 1 2-2Z"/></svg></span><span>Saved Answers</span></a>
+<a href="settings.html" class="active" aria-current="page"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.6a8 8 0 0 1-1.7 1l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.6-1.5-2.6 1.4-1.1a7 7 0 0 1 0-2L5.5 12l1.5-2.6 1.7.6a8 8 0 0 1 1.7-1l.3-1.8h3l.3 1.8a8 8 0 0 1 1.7 1l1.7-.6 1.5 2.6-1.4 1.1a7 7 0 0 1-.1 2Z"/></svg></span><span>Settings</span></a></nav>
+    <div class="sidebar-bottom">
+      <div class="offline-card"><strong><span class="offline-dot"></span>Privacy-first workspace</strong><p>Designed for local-first document workflows. Demo data only in this preview.</p></div>
+      <div class="user-mini"><span class="avatar">PC</span><span><strong>Pranav Chavan</strong><small>Student workspace</small></span></div>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="breadcrumb">Workspace <span aria-hidden="true">/</span> <strong>Settings</strong></div>
+      <div class="top-actions"><button class="icon-button" type="button" aria-label="Notifications (demo)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button><span class="avatar" aria-label="Profile initials">PC</span></div>
+    </header>
+    
+<section class="page-heading"><div><p class="eyebrow">Make it yours</p><h1>Settings</h1><p class="subtitle">Manage your workspace preferences and learn how CampusProof is designed to handle your data.</p></div></section>
+<div class="notice"><span class="notice-icon">ⓘ</span><div><strong>Settings are for demonstration only</strong>These controls show the intended interface. Changes are not saved because this project uses HTML and CSS only.</div></div>
+<section class="grid settings-layout">
+ <div>
+  <article class="card settings-card"><div class="settings-title"><span class="stat-icon tint-blue">♙</span><div><h2>Profile information</h2><p>Personalize your student workspace</p></div></div>
+   <form action="#" method="get"><div class="form-row"><div class="form-group"><label for="full-name">Full name</label><input id="full-name" value="Pranav Chavan" readonly></div><div class="form-group"><label for="student-email">Email address</label><input id="student-email" type="email" value="student@example.edu" readonly></div></div><div class="form-row"><div class="form-group"><label for="course">Course / Program</label><input id="course" value="Computer Engineering" readonly></div><div class="form-group"><label for="year">Academic year</label><select id="year" disabled><option>Second year</option></select></div></div><button type="button" class="button button-secondary">Edit profile · Demo only</button></form>
+  </article>
+  <article class="card settings-card"><div class="settings-title"><span class="stat-icon tint-purple">◐</span><div><h2>Appearance</h2><p>Choose how your workspace looks</p></div></div>
+   <div class="setting-row"><div><strong>Light appearance</strong><p>Clean, bright workspace with soft surfaces.</p></div><span class="toggle on" aria-label="Light appearance selected"></span></div>
+   <div class="setting-row"><div><strong>Reduce motion</strong><p>Limit interface transitions and movement.</p></div><span class="toggle" aria-label="Reduce motion off"></span></div>
+   <div class="setting-row"><div><strong>Compact cards</strong><p>Fit more information on the screen.</p></div><span class="toggle" aria-label="Compact cards off"></span></div>
+  </article>
+ </div>
+ <div>
+  <article class="card settings-card"><div class="settings-title"><span class="stat-icon tint-green">⌁</span><div><h2>Offline mode</h2><p>Designed for private, local-first study</p></div></div>
+   <div class="setting-row"><div><strong>Offline workspace</strong><p>Core interface is available without an account connection.</p></div><span class="status status-ready">Design goal</span></div>
+   <div class="setting-row"><div><strong>Local document processing</strong><p>Intended to keep your academic files on your device.</p></div><span class="status status-processing">Not implemented</span></div>
+   <div class="setting-row"><div><strong>Network access</strong><p>This prototype does not make network requests.</p></div><span class="status status-ready">None</span></div>
+  </article>
+  <article class="card settings-card"><div class="settings-title"><span class="stat-icon tint-amber">▤</span><div><h2>Storage</h2><p>Illustrative storage overview</p></div></div><div style="display:flex;justify-content:space-between;gap:10px"><strong style="font-size:13px">2.8 GB used</strong><span style="font-size:11px;color:var(--muted)">of 10 GB sample</span></div><div class="storage-meter"><span></span></div><div class="storage-details"><span>Documents · 2.4 GB</span><span>Other · 0.4 GB</span></div><p style="color:var(--muted);font-size:10px;margin:14px 0 0">Storage values are sample UI data and do not reflect actual disk usage.</p></article>
+  <article class="card settings-card"><div class="settings-title"><span class="stat-icon tint-blue">ⓘ</span><div><h2>About CampusProof</h2><p>Offline, citation-first AI assistant</p></div></div><p style="font-size:12px;color:var(--muted);margin:0 0 13px">CampusProof is a college project concept for helping students understand their own academic documents with transparent, traceable citations.</p><div class="setting-row"><div><strong>Version</strong><p>Frontend prototype 1.0</p></div><span style="font-size:11px;color:var(--muted)">HTML + CSS</span></div><div class="setting-row"><div><strong>Privacy principle</strong><p>Your documents should remain yours.</p></div><span class="status status-ready">By design</span></div></article>
+ </div>
+</section>
+
+    <footer class="footer-note">CampusProof · Offline-first by design · Static college project demo</footer>
+  </main>
+</div>
+ <script src="app.js"></script>
+</body>
+</html>
